@@ -1,16 +1,18 @@
+import PlayerDiv from './components/PlayerDiv';
+
 function App() {
 	return (
 		<main>
 			<div id='game-container'>
 				<ol id='players'>
-					<li>
-						<span className='player-name'>PLayer 1</span>
-						<span className='player-symbol'>X</span>
-					</li>
-					<li>
-						<span className='player-name'>PLayer 2</span>
-						<span className='player-symbol'>X</span>
-					</li>
+					<PlayerDiv
+						name='Player 1'
+						symbol='X'
+					/>
+					<PlayerDiv
+						name='Player 2'
+						symbol='O'
+					/>
 				</ol>
 				GAME BOARD
 			</div>
