@@ -1,6 +1,6 @@
 import {useState} from 'react';
 
-function PLayer({name: initialName, symbol}) {
+function PLayer({name: initialName, symbol, isActive}) {
 	// user is editing or not his name. Initially false
 	const [isEditing, setIsEditing] = useState(false);
 	const [playerName, setPlayerName] = useState(initialName);
@@ -33,7 +33,7 @@ function PLayer({name: initialName, symbol}) {
 
 	return (
 		<>
-			<li>
+			<li className={isActive ? 'active' : undefined}>
 				<span className='player'>
 					{content}
 					<span className='player-symbol'>{symbol}</span>
