@@ -3,6 +3,7 @@ import React, {useState} from 'react';
 import PlayerDiv from './components/PlayerDiv';
 import GameBoard from './components/GameBoard';
 import Log from './components/Log';
+import GameOver from './components/GameOver';
 
 const initialGameBoard = [
 	[null, null, null],
@@ -27,7 +28,6 @@ function App() {
 	const currentPlayer = deriveActivePlayer(gameTurns);
 
 	let gameBoard = initialGameBoard;
-	let winner;
 	// it wont exceute if array is empty
 	for (const turn of gameTurns) {
 		const {square, player} = turn;
@@ -36,6 +36,7 @@ function App() {
 		gameBoard[row][col] = player;
 	}
 
+	let winner;
 	for (const combination of WINNING_COMBINATIONS) {
 		const firstSquareSymbol = gameBoard[combination[0].row][combination[0].column];
 		const secondSquareSymbol = gameBoard[combination[1].row][combination[1].column];
@@ -48,6 +49,8 @@ function App() {
 			winner = firstSquareSymbol;
 		}
 	}
+
+	const hasDraw = gameTurns.length === 9 && !winner;
 
 	function handleSelectedSquare(rowIndex, colIndex) {
 		// simple toggle triggered later from GameBoard.jsx
@@ -81,7 +84,7 @@ function App() {
 						isActive={currentPlayer === 'O'}
 					/>
 				</ol>
-				{winner && <p>You won, {winner}!</p>}
+				{(winner || hasDraw) && <GameOver winner={winner} />}
 				<GameBoard
 					onSelectedSquare={handleSelectedSquare}
 					board={gameBoard}
