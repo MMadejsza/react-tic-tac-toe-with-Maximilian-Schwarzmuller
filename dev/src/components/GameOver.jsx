@@ -1,4 +1,4 @@
-function GameOwer({winner}) {
+function GameOwer({winner, rematch}) {
 	return (
 		<>
 			<div id='game-over'>
@@ -6,7 +6,7 @@ function GameOwer({winner}) {
 				{winner && <p>{winner} won!</p>}
 				{!winner && <p>It's a draw!</p>}
 				<p>
-					<button>Rematch!</button>
+					<button onClick={rematch}>Rematch!</button>
 				</p>
 			</div>
 		</>

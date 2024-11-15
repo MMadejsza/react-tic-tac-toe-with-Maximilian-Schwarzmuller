@@ -1,6 +1,6 @@
 import {useState} from 'react';
 
-function PLayer({name: initialName, symbol, isActive}) {
+function PLayer({name: initialName, symbol, isActive, onSave}) {
 	// user is editing or not his name. Initially false
 	const [isEditing, setIsEditing] = useState(false);
 	const [playerName, setPlayerName] = useState(initialName);
@@ -11,6 +11,7 @@ function PLayer({name: initialName, symbol, isActive}) {
 		// setIsEditing(!isEditing);
 		// setIsEditing(!isEditing);
 		// reality is that only last state update call will be triggered / both function receive initial state value:false
+		if (isEditing) onSave(symbol, playerName);
 	}
 	function handleChange(e) {
 		setPlayerName(e.target.value);
