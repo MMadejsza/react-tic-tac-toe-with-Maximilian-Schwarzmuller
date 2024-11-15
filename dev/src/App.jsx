@@ -5,7 +5,8 @@ import GameBoard from './components/GameBoard';
 import Log from './components/Log';
 import GameOver from './components/GameOver';
 
-const initialGameBoard = [
+const PLAYERS = {X: 'Player 1', O: 'Player 2'};
+const INITIAL_GAME_BOARD = [
 	[null, null, null],
 	[null, null, null],
 	[null, null, null],
@@ -20,26 +21,7 @@ function deriveActivePlayer(gameTurns) {
 	}
 	return currentPlayer;
 }
-
-function App() {
-	// const [activePlayer, setActivePlayer] = useState('X');
-	const [gameTurns, setGameTurns] = useState([]);
-	const [players, setPlayers] = useState({
-		X: 'Player 1',
-		O: 'Player 2',
-	});
-
-	const currentPlayer = deriveActivePlayer(gameTurns);
-
-	let gameBoard = [...initialGameBoard.map((array) => [...array])];
-	// it wont exceute if array is empty
-	for (const turn of gameTurns) {
-		const {square, player} = turn;
-		const {row, col} = square;
-
-		gameBoard[row][col] = player;
-	}
-
+function deriveWinner(gameBoard, players) {
 	let winner;
 	for (const combination of WINNING_COMBINATIONS) {
 		const firstSquareSymbol = gameBoard[combination[0].row][combination[0].column];
@@ -53,7 +35,29 @@ function App() {
 			winner = players[firstSquareSymbol];
 		}
 	}
+	return winner;
+}
+function deriveGameBoard(gameTurns) {
+	let gameBoard = [...INITIAL_GAME_BOARD.map((array) => [...array])];
+	// it wont exceute if array is empty
+	for (const turn of gameTurns) {
+		const {square, player} = turn;
+		const {row, col} = square;
 
+		gameBoard[row][col] = player;
+	}
+
+	return gameBoard;
+}
+
+function App() {
+	// const [activePlayer, setActivePlayer] = useState('X');
+	const [gameTurns, setGameTurns] = useState([]);
+	const [players, setPlayers] = useState(PLAYERS);
+
+	const gameBoard = deriveGameBoard(gameTurns);
+	const currentPlayer = deriveActivePlayer(gameTurns);
+	const winner = deriveWinner(gameBoard, players);
 	const hasDraw = gameTurns.length === 9 && !winner;
 
 	function handleSelectedSquare(rowIndex, colIndex) {
@@ -88,14 +92,14 @@ function App() {
 					id='players'
 					className='highlight-player'>
 					<PlayerDiv
-						name='Player 1'
+						name={PLAYERS.X}
 						symbol='X'
 						onSave={handlePlayerNameChange}
 						// {activePlayer ==='X'} -> condition to check
 						isActive={currentPlayer === 'X'}
 					/>
 					<PlayerDiv
-						name='Player 2'
+						name={PLAYERS.O}
 						symbol='O'
 						onSave={handlePlayerNameChange}
 						isActive={currentPlayer === 'O'}
